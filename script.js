@@ -34,5 +34,60 @@ function generateQuestion() {
     return correctAnswer;
 }
 
+//function to update scores on the screen
+function updateScores() {
+    document.getElementById('score1').textContent = score1; 
+    document.getElementById('score2').textContent = score2; 
+}
+
+//function to handle player input
+function handlePlayerInput(player, selectedOption){
+    if (parseFloat(selectedOption) === correctAnswer) {
+        if (player === 1) {
+            score1++; 
+        }
+        else if (player === 2) {
+            score2++; 
+        }
+
+        //check if game over
+        if (score1 === 10 || score2 === 10) {
+            const winner = score1 === 10 ? 'Player 1' : 'Player 2';
+            alert(`${winner} wins!`);
+            resetGame(); 
+        }
+        else {
+            //generate a new question 
+            correctAnswer = generateQuestion(); 
+        }
+    }
+    else {
+        alert(`Wrong answer! Try again.`);
+    }
+
+    updateScores();
+}
+
+//Function to reset the game
+function resetGame() {
+    score1 = 0; 
+    score2 = 0; 
+    updateScores(); 
+    correctAnswer = generateQuestion(); 
+}
+
+//add keyboard controls for players
+document.addEventListener('keydown', (event) => {
+    //for player 1
+    if (event.key === 'a') handlePlayerInput(1, document.getElementById('option1').textContent);
+    if (event.key === 's') handlePlayerInput(1, document.getElementById('option2').textContent);
+    if (event.key === 'd') handlePlayerInput(1, document.getElementById('option3').textContent);
+
+    //for player 2
+    if (event.key === 'j') handlePlayerInput(2, document.getElementById('option1').textContent);
+    if (event.key === 'k') handlePlayerInput(2, document.getElementById('option2').textContent);
+    if (event.key === 'l') handlePlayerInput(2, document.getElementById('option3').textContent);
+});
+
 //start the game
 let correctAnswer = generateQuestion(); 
